@@ -18,7 +18,7 @@ pip3 install -r requirements.txt
 ### Generate chain
 
 ```bash
-python3 gen_chain.py --host 89.207.132.170 --target-port 22 --output chain.txt`
+python3 gen_chain.py --host 89.207.132.170 --target-port 22 --output chain.txt
 ```
 
 ### Generate Mikrotik configuration rules
