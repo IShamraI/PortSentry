@@ -1,5 +1,5 @@
 # PortSentry
-PortSentry is your Port Knocking Configuration Companion
+PortSentry is your Port Knocking Configuration Companion for Mikrotik RouterOS.
 
 ## Usage
 
