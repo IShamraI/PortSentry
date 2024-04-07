@@ -3,7 +3,7 @@ import base64
 import pickle
 import unittest
 
-from libs.knock import read_chain, write_chain
+from ..libs.knock import read_chain, write_chain
 
 
 class TestKnock(unittest.TestCase):

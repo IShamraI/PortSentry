@@ -4,6 +4,7 @@ import sys
 import argparse
 from libs.knock import read_chain, executors
 
+
 def main():
     """
     Main function.
@@ -22,6 +23,7 @@ def main():
 
     for rule in rules:
         executors[rule['type']](**rule)
+
 
 if __name__ == "__main__":
     main()

@@ -7,7 +7,7 @@ import sys
 from libs.knock import rule_templates, read_rules
 
 
-def generate_knocking_rules(rules = []) -> list:
+def generate_knocking_rules(rules) -> list:
     knock_rules = []
     initial_rule = rules[0]
     initial_rule.update({'target_address_list': 'KNOCK-0'})
