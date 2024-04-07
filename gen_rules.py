@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import argparse
-import pickle
-import base64
 import sys
+
 from libs.knock import rule_templates, read_rules
+
 
 def generate_knocking_rules(rules = []) -> list:
     knock_rules = []
@@ -16,11 +18,13 @@ def generate_knocking_rules(rules = []) -> list:
     accept_rule.update({'src_address_list': 'KNOCK-ACCEPT'})
     rules = rules[0:-2]
     for rule in rules:
-        rule.update({'src_address_list': f"KNOCK-{rules.index(rule)+1}", 'target_address_list': f"KNOCK-{rules.index(rule)+2}"})
+        rule.update({'src_address_list': f"KNOCK-{rules.index(rule)+1}",
+                     'target_address_list': f"KNOCK-{rules.index(rule)+2}"})
         knock_rules.append(rule_templates[rule['type']][1].format(**rule))
     knock_rules.append(rule_templates[final_rule['type']][2].format(**final_rule))
     knock_rules.append(rule_templates[accept_rule['type']].format(**accept_rule))
     return knock_rules
+
 
 def main():
     """
@@ -41,6 +45,7 @@ def main():
     rules = generate_knocking_rules(chain)
     for rule in rules:
         print(rule)
+
 
 if __name__ == "__main__":
     main()

@@ -6,6 +6,7 @@ import base64
 import random
 from libs.knock import event_types, event_fields, write_chain
 
+
 def generate_knocking_chain(length=3, host='localhost') -> list:
     """
     Generates a knocking chain of specified length.
@@ -29,6 +30,7 @@ def generate_knocking_chain(length=3, host='localhost') -> list:
                 raise ValueError(f"Unsupported field type: {field_type}")
         events.append(event)
     return events
+
 
 def main():
     """
@@ -54,6 +56,7 @@ def main():
     if args.output is not None:
         write_chain(chain, args.output)
         print(f"Chain saved to {args.output}")
+
 
 if __name__ == "__main__":
     main()
