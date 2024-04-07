@@ -3,7 +3,7 @@ import base64
 import pickle
 import unittest
 
-from ..libs.knock import read_chain, write_chain
+from libs.knock import read_chain, write_chain
 
 
 class TestKnock(unittest.TestCase):
@@ -24,9 +24,9 @@ class TestKnock(unittest.TestCase):
     def tearDown(self):
         try:
             os.remove('test_chain')
+        except FileNotFoundError:
+            pass
+        try:
             os.remove('test_chain2')
         except FileNotFoundError:
             pass
-
-if __name__ == '__main__':
-    unittest.main()

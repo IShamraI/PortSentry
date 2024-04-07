@@ -3,7 +3,7 @@ import pickle
 import socket
 import pickle
 
-from scapy.all import *
+from scapy.all import IP, ICMP, send, Raw
 
 
 event_types = {
@@ -26,49 +26,49 @@ event_fields = {
 rule_templates = {
     'access_port': (
         "/ip firewall filter add action=add-src-to-address-list address-list={target_address_list} " +
-            "address-list-timeout=30s chain=input dst-port={port} protocol=tcp comment=\"Pre-Knock " +
-            "to tcp:{port} add to address list {target_address_list}\"",
+        "address-list-timeout=30s chain=input dst-port={port} protocol=tcp comment=\"Pre-Knock " +
+        "to tcp:{port} add to address list {target_address_list}\"",
         "/ip firewall filter add action=add-src-to-address-list address-list={target_address_list} " +
-            "address-list-timeout=30s chain=input dst-port={port} protocol=tcp comment=\"Middle-Knock " +
-            "to tcp:{port} add to address list {target_address_list} from {src_address_list}\" " +
-            "src-address-list={src_address_list}",
+        "address-list-timeout=30s chain=input dst-port={port} protocol=tcp comment=\"Middle-Knock " +
+        "to tcp:{port} add to address list {target_address_list} from {src_address_list}\" " +
+        "src-address-list={src_address_list}",
         "/ip firewall filter add action=add-src-to-address-list address-list={target_address_list} " +
-            "address-list-timeout=1h chain=input dst-port={port} protocol=tcp comment=\"Final-Knock " +
-            "to tcp:{port} add to address list {target_address_list} from {src_address_list}\" " +
-            "src-address-list={src_address_list}"
+        "address-list-timeout=1h chain=input dst-port={port} protocol=tcp comment=\"Final-Knock " +
+        "to tcp:{port} add to address list {target_address_list} from {src_address_list}\" " +
+        "src-address-list={src_address_list}"
     ),
     'send_ping_packet': (
         "/ip firewall filter add action=add-src-to-address-list address-list={target_address_list} " +
-            "address-list-timeout=30s chain=input dst-port={port} packet-size={packet_length} " +
-            "protocol=icmp comment=\"Pre-Knock to icmp:{port} with packet length {packet_length} " +
-            "add to address list {target_address_list}\"",
+        "address-list-timeout=30s chain=input dst-port={port} packet-size={packet_length} " +
+        "protocol=icmp comment=\"Pre-Knock to icmp:{port} with packet length {packet_length} " +
+        "add to address list {target_address_list}\"",
         "/ip firewall filter add action=add-src-to-address-list address-list={target_address_list} " +
-            "address-list-timeout=30s chain=input dst-port={port} packet-size={packet_length} " +
-            "protocol=icmp comment=\"Middle-Knock to icmp:{port} with packet length {packet_length} " +
-            "add to address list {target_address_list} from {src_address_list}\" " +
-            "src-address-list={src_address_list}",
+        "address-list-timeout=30s chain=input dst-port={port} packet-size={packet_length} " +
+        "protocol=icmp comment=\"Middle-Knock to icmp:{port} with packet length {packet_length} " +
+        "add to address list {target_address_list} from {src_address_list}\" " +
+        "src-address-list={src_address_list}",
         "/ip firewall filter add action=add-src-to-address-list address-list={target_address_list} " +
-            "address-list-timeout=1h chain=input dst-port={port} packet-size={packet_length} " +
-            "protocol=icmp comment=\"Final-Knock to icmp:{port} with packet length {packet_length} " +
-            "add to address list {target_address_list} from {src_address_list}\" " +
-            "src-address-list={src_address_list}"
+        "address-list-timeout=1h chain=input dst-port={port} packet-size={packet_length} " +
+        "protocol=icmp comment=\"Final-Knock to icmp:{port} with packet length {packet_length} " +
+        "add to address list {target_address_list} from {src_address_list}\" " +
+        "src-address-list={src_address_list}"
     ),
     'send_udp_data': (
         "/ip firewall filter add action=add-src-to-address-list address-list={target_address_list} " +
-            "address-list-timeout=30s chain=input dst-port={port} protocol=udp comment=\"Pre-Knock " +
-            "to udp:{port} add to address list {target_address_list}\"",
+        "address-list-timeout=30s chain=input dst-port={port} protocol=udp comment=\"Pre-Knock " +
+        "to udp:{port} add to address list {target_address_list}\"",
         "/ip firewall filter add action=add-src-to-address-list address-list={target_address_list} " +
-            "address-list-timeout=30s chain=input dst-port={port} protocol=udp comment=\"Middle-Knock " +
-            "to udp:{port} add to address list {target_address_list} from {src_address_list}\" " +
-            "src-address-list={src_address_list}",
+        "address-list-timeout=30s chain=input dst-port={port} protocol=udp comment=\"Middle-Knock " +
+        "to udp:{port} add to address list {target_address_list} from {src_address_list}\" " +
+        "src-address-list={src_address_list}",
         "/ip firewall filter add action=add-src-to-address-list address-list={target_address_list} " +
-            "address-list-timeout=1h chain=input dst-port={port} protocol=udp comment=\"Final-Knock " +
-            "to udp:{port} add to address list {target_address_list} from {src_address_list}\" " +
-            "src-address-list={src_address_list}"
+        "address-list-timeout=1h chain=input dst-port={port} protocol=udp comment=\"Final-Knock " +
+        "to udp:{port} add to address list {target_address_list} from {src_address_list}\" " +
+        "src-address-list={src_address_list}"
     ),
     'accept_knock': (
         "/ip firewall filter add action=accept chain=input dst-port={port} protocol=tcp " +
-            "src-address-list={src_address_list}"
+        "src-address-list={src_address_list}"
     )
 }
 
